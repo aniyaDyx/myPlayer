@@ -133,7 +133,7 @@ export default {
 
           ;
           sessionStorage.getItem("cookie");
-          
+
           sessionStorage.setItem("isLogin", res.data.data.account.status);
           sessionStorage.setItem("userid", res.data.data.account.id);
           sessionStorage.setItem("avatarUrl", res.data.data.profile.avatarUrl);
