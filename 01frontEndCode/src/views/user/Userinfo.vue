@@ -38,26 +38,28 @@
                 <el-radio label="2">女</el-radio>
               </el-radio-group>
             </el-form-item>
-             <div class="block" style="margin-bottom:10px">
-    <span class="demonstration">生日：</span>
-    <el-date-picker
-      v-model="birthday"
-      align="right"
-      type="date"
-      placeholder="选择日期"
-      :picker-options="pickerOptions"
-     value-format="timestamp">
-    </el-date-picker>
-  </div>
-  <div style="margin-bottom:10px">
-<span>地址：</span>
-   <el-cascader
-      size="large"
-      :options="options"
-      v-model="selectedOptions"
-      @change="handleChange">
-    </el-cascader>
-    </div>
+            <div class="block" style="margin-bottom: 10px">
+              <span class="demonstration">生日：</span>
+              <el-date-picker
+                v-model="birthday"
+                align="right"
+                type="date"
+                placeholder="选择日期"
+                :picker-options="pickerOptions"
+                value-format="timestamp"
+              >
+              </el-date-picker>
+            </div>
+            <div style="margin-bottom: 10px">
+              <span>地址：</span>
+              <el-cascader
+                size="large"
+                :options="options"
+                v-model="selectedOptions"
+                @change="handleChange"
+              >
+              </el-cascader>
+            </div>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">保存</el-button>
               <el-button @click="out">退出</el-button>
@@ -72,6 +74,7 @@
             :on-change="changePic"
             :http-request="submitUpload"
             :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
             action=""
           >
             <!-- eslint-disable -->
@@ -84,8 +87,6 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </div>
-
-      
       </div>
     </div>
   </div>
@@ -97,8 +98,7 @@ import { updataUserInfo } from "../../request/api/request";
 import HeaderNav from "../../components/headerNav/HeaderNav.vue";
 import Banner from "../../components/banner/Banner.vue";
 import MainCentent from "../../views/home/MainCentent.vue";
-import { provinceAndCityDataPlus } from 'element-china-area-data'
-
+import { provinceAndCityDataPlus } from "element-china-area-data";
 
 export default {
   components: {
@@ -117,34 +117,40 @@ export default {
         shortUserName: "",
       },
       newImageUrl: "",
-       pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
-          shortcuts: [{
-            text: '今天',
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
             onClick(picker) {
-              picker.$emit('pick', new Date());
-            }
-          }, {
-            text: '昨天',
+              picker.$emit("pick", new Date());
+            },
+          },
+          {
+            text: "昨天",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit('pick', date);
-            }
-          }, {
-            text: '一周前',
+              picker.$emit("pick", date);
+            },
+          },
+          {
+            text: "一周前",
             onClick(picker) {
               const date = new Date();
               date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', date);
-            }
-          }]
-        },
-        birthday: '',
-         options: provinceAndCityDataPlus ,
-        selectedOptions: []
+              picker.$emit("pick", date);
+            },
+          },
+        ],
+      },
+      birthday: "",
+      options: provinceAndCityDataPlus,
+      selectedOptions: [],
+      width:0,
+      height:0
     };
   },
   created() {
@@ -155,12 +161,50 @@ export default {
     this.form.gender = sessionStorage.getItem("gender");
     this.birthday = sessionStorage.getItem("birthday");
 
-    
-   
-     this.selectedOptions = [sessionStorage.getItem("province"),sessionStorage.getItem("city")]
+    this.selectedOptions = [
+      sessionStorage.getItem("province"),
+      sessionStorage.getItem("city"),
+    ];
     this.getStatus();
   },
   methods: {
+      getImgSize(file) {
+        return new Promise((resolve, reject) => {
+          let reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = function (theFile) {
+            let image = new Image()
+            image.src = theFile.target.result
+            image.onload = function () {
+              resolve({
+                width: this.width,
+                height: this.height,
+              })
+            }
+          }
+        })
+      },
+     async beforeAvatarUpload(file) {
+     const a=await this.getImgSize(file)
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        console.log(1111111111);
+        console.log(file);
+        console.log(a);
+        this.width=a.width
+        this.height =a.height
+
+
+        return isJPG && isLt2M;
+        
+      },
     out() {
       // 清空token
       window.sessionStorage.clear();
@@ -184,12 +228,16 @@ export default {
           sessionStorage.setItem("isLogin", res.data.data.account.status);
           sessionStorage.setItem("userid", res.data.data.account.id);
           sessionStorage.setItem("avatarUrl", res.data.data.profile.avatarUrl);
-          this.newImageUrl = this.form.imageUrl =res.data.data.profile.avatarUrl;
+          this.newImageUrl = this.form.imageUrl =
+            res.data.data.profile.avatarUrl;
           sessionStorage.setItem("nickname", res.data.data.profile.nickname);
           sessionStorage.setItem("signature", res.data.data.profile.signature);
           sessionStorage.setItem("gender", res.data.data.profile.gender);
-          sessionStorage.setItem("shortUserName",res.data.data.profile.shortUserName);
-          sessionStorage.setItem("birthday",res.data.data.profile.birthday);
+          sessionStorage.setItem(
+            "shortUserName",
+            res.data.data.profile.shortUserName
+          );
+          sessionStorage.setItem("birthday", res.data.data.profile.birthday);
           sessionStorage.setItem("city", res.data.data.profile.city);
           sessionStorage.setItem("province", res.data.data.profile.province);
         });
@@ -206,7 +254,7 @@ export default {
         this.form.signature,
         this.form.name,
         this.birthday,
-        this.selectedOptions,
+        this.selectedOptions
         // sessionStorage.getItem("province"),
         // sessionStorage.getItem("city")
       );
@@ -216,9 +264,6 @@ export default {
       sessionStorage.setItem("birthday", this.birthday);
       sessionStorage.setItem("province", this.selectedOptions[0]);
       sessionStorage.setItem("city", this.selectedOptions[1]);
-
-     
-     
     },
 
     handleAvatarSuccess() {
@@ -230,7 +275,7 @@ export default {
       const cookie = sessionStorage.getItem("cookie");
       const res = await axios({
         method: "post",
-        url: `https://netease-cloud-music-api-beta-lyart.vercel.app/avatar/upload?cookie=${cookie}&timestamp=${Date.now()}`,
+        url: `https://netease-cloud-music-api-beta-lyart.vercel.app/avatar/upload?cookie=${cookie}&timestamp=${Date.now()}&imgSize=${this.width}`,
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -243,16 +288,17 @@ export default {
       console.log("pic change");
       this.submitAddForm();
     },
-     handleChange () {
-        var location = "";
-        // for (let i = 0; i < this.selectedOptions.length; i++) {
-        //     location+= CodeToText[this.selectedOptions[i]];
-        // }
-        console.log(location)//打印区域码所对应的属性值即中文地址
-      },
+    handleChange() {
+      var location = "";
+      // for (let i = 0; i < this.selectedOptions.length; i++) {
+      //     location+= CodeToText[this.selectedOptions[i]];
+      // }
+      console.log(location); //打印区域码所对应的属性值即中文地址
+    },
+   
   },
-
-  
+   
+    
 };
 </script>
 
@@ -289,6 +335,7 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  
 }
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
@@ -302,24 +349,25 @@ export default {
   text-align: center;
 }
 .avatar {
-  // width: 178px;
-  // height: 178px;
+  width: 178px;
+  height: 178px;
   display: block;
 }
 .touxiang {
   position: absolute;
- 
+
   top: 210px;
   right: 436px;
   border: 1px solid black;
+  width: 100px;
+  height: 100px;
 }
 .births {
   display: flex;
   flex-wrap: nowrap;
   margin-bottom: 10px;
- 
 }
-.births span{
+.births span {
   height: 50px;
   line-height: 50px;
 }

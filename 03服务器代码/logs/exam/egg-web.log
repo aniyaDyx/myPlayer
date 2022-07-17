@@ -1,0 +1,16 @@
+2022-07-15 14:14:48,457 INFO 17432 [egg:logger] init all loggers with options: {"dir":"D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\logs\\exam","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"exam-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":false,"enablePerformanceTimer":false,"type":"application"}
+2022-07-15 14:14:48,481 INFO 17432 [egg-multipart] file mode enable
+2022-07-15 14:14:48,481 INFO 17432 [egg-multipart] will save temporary files to "C:\\Users\\aniya\\AppData\\Local\\Temp\\egg-multipart-tmp\\exam", cleanup job cron: "0 30 4 * * *"
+2022-07-15 14:14:48,481 INFO 17432 [egg-mysql] connecting root@127.0.0.1:3306/myplayer
+2022-07-15 14:14:48,629 INFO 17432 [egg-static] starting static serve /public/ -> D:\project\myPlayer111\myPlayer\03服务器代码\app\public
+2022-07-15 14:14:48,631 INFO 17432 [egg-security] use methodnoallow middleware
+2022-07-15 14:14:48,632 INFO 17432 [egg-security] use noopen middleware
+2022-07-15 14:14:48,633 INFO 17432 [egg-security] use nosniff middleware
+2022-07-15 14:14:48,633 INFO 17432 [egg-security] use xssProtection middleware
+2022-07-15 14:14:48,633 INFO 17432 [egg-security] use xframe middleware
+2022-07-15 14:14:48,634 INFO 17432 [egg-security] use dta middleware
+2022-07-15 14:14:48,634 INFO 17432 [egg-security] compose 6 middlewares into one security middleware
+2022-07-15 14:14:48,645 INFO 17432 [egg:core] dump config after load, 5ms
+2022-07-15 14:14:48,661 INFO 17432 [egg-mysql] instance[0] status OK, rds currentTime: Fri Jul 15 2022 14:14:48 GMT+0800 (中国标准时间)
+2022-07-15 14:14:48,663 INFO 17432 [egg-watcher:application] watcher start success
+2022-07-15 14:14:48,669 INFO 17432 [egg:core] dump config after ready, 5ms

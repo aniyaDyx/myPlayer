@@ -1,0 +1,10 @@
+2022-07-15 14:14:47,456 INFO 7540 [egg:logger] init all loggers with options: {"dir":"D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\logs\\exam","encoding":"utf8","env":"local","level":"INFO","consoleLevel":"INFO","disableConsoleAfterReady":false,"outputJSON":false,"buffer":true,"appLogName":"exam-web.log","coreLogName":"egg-web.log","agentLogName":"egg-agent.log","errorLogName":"common-error.log","coreLogger":{"consoleLevel":"WARN"},"allowDebugAtProd":false,"enablePerformanceTimer":false,"type":"agent"}
+2022-07-15 14:14:47,462 INFO 7540 [egg:core] dump config after load, 3ms
+2022-07-15 14:14:47,497 INFO 7540 [egg-watcher] Start watching: ["D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\app","D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\config","D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\mocks","D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\mocks_proxy","D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\app.js"]
+2022-07-15 14:14:47,497 INFO 7540 [egg-watcher] Start watching: "D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\app"
+2022-07-15 14:14:47,497 INFO 7540 [egg-watcher] Start watching: "D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\config"
+2022-07-15 14:14:47,498 INFO 7540 [egg-watcher] Start watching: "D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\mocks"
+2022-07-15 14:14:47,498 INFO 7540 [egg-watcher] Start watching: "D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\mocks_proxy"
+2022-07-15 14:14:47,498 INFO 7540 [egg-watcher] Start watching: "D:\\project\\myPlayer111\\myPlayer\\03服务器代码\\app.js"
+2022-07-15 14:14:47,498 INFO 7540 [egg-watcher:agent] watcher start success
+2022-07-15 14:14:47,514 INFO 7540 [egg:core] dump config after ready, 6ms
